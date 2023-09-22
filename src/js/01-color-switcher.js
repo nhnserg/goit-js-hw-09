@@ -27,6 +27,8 @@ function getRandomHexColor() {
     .padStart(6, 0)}`;
 }
 
+//****another solution ****//
+
 // const startButton = document.querySelector('[data-start]');
 // const stopButton = document.querySelector('[data-stop]');
 // const body = document.body;
