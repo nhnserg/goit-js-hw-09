@@ -1,4 +1,5 @@
 import Notiflix from 'notiflix';
+
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
@@ -12,15 +13,19 @@ function createPromise(position, delay) {
   });
 }
 
+// Получаем элементы формы один раз
+const form = document.querySelector('.form');
+const delayInput = form.querySelector('input[name="delay"]');
+const stepInput = form.querySelector('input[name="step"]');
+const amountInput = form.querySelector('input[name="amount"]');
+
 // Обработчик события отправки формы
-document.querySelector('.form').addEventListener('submit', function (e) {
+form.addEventListener('submit', function (e) {
   e.preventDefault(); // Предотвращаем стандартное поведение формы
 
-  const firstDelay = parseInt(
-    document.querySelector('input[name="delay"]').value
-  );
-  const step = parseInt(document.querySelector('input[name="step"]').value);
-  const amount = parseInt(document.querySelector('input[name="amount"]').value);
+  const firstDelay = parseInt(delayInput.value);
+  const step = parseInt(stepInput.value);
+  const amount = parseInt(amountInput.value);
 
   // Создаем промисы в цикле
   for (let i = 0; i < amount; i++) {

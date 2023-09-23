@@ -1,5 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+  <style>
+    button[data-start] {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Стили для таймера */
+    .timer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 20px;
+    }
+
+    .value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .label {
+      font-size: 16px;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    /* Стили для ввода даты и времени */
+    #datetime-picker {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    /* Стили для ссылки "Go back" */
+    p a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    p a:hover {
+      text-decoration: underline;
+    }
+  </style>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

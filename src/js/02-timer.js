@@ -1,37 +1,57 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
-const options = {
-  enableTime: true,
-  time_24hr: true,
-  defaultDate: new Date(),
-  minuteIncrement: 1,
-  onClose(selectedDates) {
-    const selectedDate = selectedDates[0];
-    const currentDate = new Date();
-
-    if (selectedDate <= currentDate) {
-      alert('Please choose a date in the future');
-      document.querySelector('[data-start]').disabled = true;
-    } else {
-      document.querySelector('[data-start]').disabled = false;
-    }
-  },
-};
-
+// Кеширование доступа к элементам DOM
+const start = document.querySelector('[data-start]');
 const dateTimePicker = document.getElementById('datetime-picker');
-flatpickr(dateTimePicker, options);
-
 const startButton = document.querySelector('[data-start]');
 const timeFields = document.querySelectorAll('.value');
 
 let countdownInterval;
 
+// Функция настройки Flatpickr
+function setupDateTimePicker() {
+  const options = {
+    enableTime: true,
+    time_24hr: true,
+    defaultDate: new Date(),
+    minuteIncrement: 1,
+    onClose(selectedDates) {
+      handleDateTimePickerClose(selectedDates);
+    },
+  };
+  flatpickr(dateTimePicker, options);
+}
+
+// Функция, вызываемая при закрытии DateTimePicker
+function handleDateTimePickerClose(selectedDates) {
+  const selectedDate = selectedDates[0];
+  const currentDate = Date.now();
+
+  if (selectedDate <= currentDate) {
+    alert('Please choose a date in the future');
+    disableStartButton();
+  } else {
+    enableStartButton();
+  }
+}
+
+// Функция отключения кнопки "Start"
+function disableStartButton() {
+  startButton.disabled = true;
+}
+
+// Функция включения кнопки "Start"
+function enableStartButton() {
+  startButton.disabled = false;
+}
+
+// Функция запуска обратного отсчета
 function startCountdown(targetDate) {
   clearInterval(countdownInterval);
 
   function updateTimer() {
-    const currentDate = new Date();
+    const currentDate = Date.now();
     let timeDifference = targetDate - currentDate;
 
     if (timeDifference <= 0) {
@@ -39,15 +59,21 @@ function startCountdown(targetDate) {
       timeDifference = 0;
     }
     const time = convertMs(timeDifference);
-    timeFields[0].textContent = addLeadingZero(time.days);
-    timeFields[1].textContent = addLeadingZero(time.hours);
-    timeFields[2].textContent = addLeadingZero(time.minutes);
-    timeFields[3].textContent = addLeadingZero(time.seconds);
+    updateTimeFields(time);
   }
   updateTimer();
   countdownInterval = setInterval(updateTimer, 1000);
 }
 
+// Функция обновления полей времени
+function updateTimeFields(time) {
+  timeFields[0].textContent = addLeadingZero(time.days);
+  timeFields[1].textContent = addLeadingZero(time.hours);
+  timeFields[2].textContent = addLeadingZero(time.minutes);
+  timeFields[3].textContent = addLeadingZero(time.seconds);
+}
+
+// Функция преобразования миллисекунд в дни, часы, минуты и секунды
 function convertMs(ms) {
   const second = 1000;
   const minute = second * 60;
@@ -61,11 +87,19 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
+// Функция добавления ведущего нуля к числовому значению
 function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
 }
-startButton.addEventListener('click', () => {
-  const selectDate = dateTimePicker._flatpickr.selectedDates[0];
-  startCountdown(selectDate);
-  startButton.disabled = true;
-});
+
+// Инициализация кода
+function initialize() {
+  setupDateTimePicker();
+  startButton.addEventListener('click', () => {
+    const selectedDate = dateTimePicker._flatpickr.selectedDates[0];
+    startCountdown(selectedDate);
+    disableStartButton();
+  });
+}
+
+initialize();
