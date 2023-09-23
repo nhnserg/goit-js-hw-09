@@ -27,12 +27,9 @@ form.addEventListener('submit', function (e) {
   const amount = parseInt(amountInput.value);
 
   if (isNaN(firstDelay) || isNaN(step) || isNaN(amount)) {
-    Notiflix.Notify.Failure('❌ Please enter valid numbers.');
+    Notiflix.Notify.failure('❌ Please enter valid numbers.');
     return;
   }
-
-  // Очистка предыдущих уведомлений
-  Notiflix.Notify.closeAll();
 
   for (let i = 0; i < amount; i++) {
     const position = i + 1;
@@ -40,12 +37,12 @@ form.addEventListener('submit', function (e) {
 
     createPromise(position, delay)
       .then(({ position, delay }) => {
-        Notiflix.Notify.Success(
+        Notiflix.Notify.success(
           `✅ Fulfilled promise ${position} in ${delay}ms`
         );
       })
       .catch(({ position, delay }) => {
-        Notiflix.Notify.Failure(
+        Notiflix.Notify.failure(
           `❌ Rejected promise ${position} in ${delay}ms`
         );
       });
